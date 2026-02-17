@@ -1,519 +1,299 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Anusha's Housie</title>
-  <style>
-    :root{
-      --bgTop:#12060c;        /* deep wine */
-      --bgMid:#0b0a12;        /* midnight */
-      --bgBot:#070a12;
-      --card: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.12);
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Anusha's Housie</title>
 
-      --text:#f6f2ff;
-      --muted:#cbbfe6;
+<style>
 
-      --rose:#fb7185;
-      --coral:#ff6b6b;
-      --gold:#f5c542;
-      --cream:#fff1d6;
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      background:
-        radial-gradient(1100px 650px at 18% 10%, rgba(255,107,107,.22) 0%, transparent 55%),
-        radial-gradient(900px 600px at 84% 0%, rgba(245,197,66,.18) 0%, transparent 55%),
-        radial-gradient(900px 600px at 70% 90%, rgba(251,113,133,.14) 0%, transparent 60%),
-        linear-gradient(180deg, var(--bgTop), var(--bgMid) 55%, var(--bgBot));
-    }
-    .wrap{
-      width:min(1180px, 100%);
-      display:grid;
-      grid-template-columns: 1.35fr .95fr;
-      gap:18px;
-    }
-    .panel{
-      background: var(--card);
-      border:1px solid var(--border);
-      border-radius:26px;
-      box-shadow: 0 22px 70px rgba(0,0,0,.50);
-      overflow:hidden;
-      backdrop-filter: blur(12px);
-      position:relative;
-    }
-    .panel::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      pointer-events:none;
-      background:
-        radial-gradient(900px 240px at 15% 0%, rgba(255,241,214,.10), transparent 60%),
-        radial-gradient(900px 240px at 85% 100%, rgba(251,113,133,.10), transparent 62%);
-      opacity:.9;
-    }
-    header{
-      position:relative;
-      padding:18px 18px 12px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .title{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .title h1{
-      margin:0;
-      font-size:22px;
-      letter-spacing:.2px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-    }
-    .subpillRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .pill{
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:12px;
-      color:rgba(255,241,214,.92);
-      border:1px solid rgba(255,241,214,.18);
-      background: rgba(255,241,214,.06);
-      white-space:nowrap;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .badge{
-      position:relative;
-      padding:10px 14px;
-      border-radius:999px;
-      font-size:12px;
-      color:#2b1018;
-      background: linear-gradient(135deg, var(--gold), var(--cream));
-      border: 1px solid rgba(255,255,255,.20);
-      box-shadow: 0 14px 35px rgba(245,197,66,.18);
-      white-space:nowrap;
-      font-weight:850;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .main{
-      position:relative;
-      padding:18px;
-      display:grid;
-      grid-template-rows:auto auto;
-      gap:14px;
-    }
-    .current{
-      border-radius:24px;
-      background: linear-gradient(135deg, rgba(255,241,214,.10), rgba(255,255,255,.03));
-      border:1px solid rgba(255,241,214,.16);
-      padding:26px 22px;
-      min-height:275px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .current::after{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(520px 280px at 25% 30%, rgba(255,107,107,.16), transparent 62%),
-        radial-gradient(520px 280px at 85% 70%, rgba(245,197,66,.14), transparent 62%);
-      pointer-events:none;
-    }
-    .label{
-      position:relative;
-      color:rgba(203,191,230,.95);
-      font-size:12px;
-      letter-spacing:.30em;
-      text-transform:uppercase;
-      margin-bottom:12px;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .word{
-      position:relative;
-      font-size: clamp(46px, 6.3vw, 82px);
-      font-weight:900;
-      line-height:1.02;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      text-shadow: 0 12px 38px rgba(0,0,0,.55);
-      word-break: break-word;
-      padding: 0 10px;
-    }
-    .status{
-      position:relative;
-      margin-top:14px;
-      color:rgba(203,191,230,.95);
-      font-size:14px;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .giftBanner{
-      position:relative;
-      margin-top:12px;
-      padding:10px 12px;
-      border-radius:16px;
-      border:1px solid rgba(255,241,214,.18);
-      background: rgba(255,241,214,.06);
-      color: rgba(255,241,214,.92);
-      font-size:13px;
-      display:inline-flex;
-      gap:9px;
-      align-items:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .giftDot{
-      width:10px; height:10px; border-radius:999px;
-      background: linear-gradient(135deg, var(--gold), var(--rose));
-      box-shadow: 0 0 0 3px rgba(245,197,66,.12);
-    }
-    .controls{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
-    button{
-      border:none;
-      padding:12px 14px;
-      border-radius:16px;
-      font-weight:850;
-      cursor:pointer;
-      transition: transform .08s ease, filter .15s ease, opacity .15s ease;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      letter-spacing:.2px;
-    }
-    button:active{ transform: translateY(1px) scale(.99); }
-    .btn-primary{
-      background: linear-gradient(135deg, var(--rose), var(--gold));
-      color:#220b12;
-      box-shadow: 0 16px 45px rgba(251,113,133,.16);
-    }
-    .btn-secondary{
-      background: rgba(255,241,214,.08);
-      color: var(--text);
-      border:1px solid rgba(255,241,214,.16);
-    }
-    .btn-danger{
-      background: rgba(239,68,68,.14);
-      color:#ffe4e6;
-      border:1px solid rgba(239,68,68,.22);
-    }
-    .btn-secondary:hover, .btn-primary:hover, .btn-danger:hover{ filter: brightness(1.07); }
-    button:disabled{ opacity:.55; cursor:not-allowed; }
+:root{
+--bgTop:#12060c;
+--bgMid:#0b0a12;
+--bgBot:#070a12;
 
-    .side{
-      position:relative;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      height: 100%;
-    }
-    .side h2{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.15px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-    }
-    .miniPill{
-      font-size:11px;
-      color:rgba(203,191,230,.95);
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,241,214,.14);
-      background: rgba(255,241,214,.06);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .pickedBox{
-      background: rgba(255,241,214,.05);
-      border:1px solid rgba(255,241,214,.12);
-      border-radius:18px;
-      padding:12px;
-      overflow:auto;
-      max-height: 420px;
-    }
-    .pickedList{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-    .chip{
-      padding:7px 10px;
-      border-radius:999px;
-      background: rgba(255,241,214,.09);
-      border:1px solid rgba(255,241,214,.14);
-      color: var(--text);
-      font-size:12px;
-      letter-spacing:.2px;
-      text-transform: uppercase;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .chip.gift{
-      background: rgba(245,197,66,.18);
-      border:1px solid rgba(245,197,66,.35);
-      box-shadow: 0 10px 22px rgba(245,197,66,.10);
-    }
-    textarea{
-      width:100%;
-      min-height:150px;
-      border-radius:16px;
-      background: rgba(255,241,214,.05);
-      border:1px solid rgba(255,241,214,.14);
-      color:var(--text);
-      padding:10px 12px;
-      resize:vertical;
-      font-size:12px;
-      outline:none;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    .hint{
-      color:rgba(203,191,230,.95);
-      font-size:12px;
-      line-height:1.35;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-    @media (max-width: 920px){
-      .wrap{ grid-template-columns: 1fr; }
-      .pickedBox{ max-height: 240px; }
-    }
-  </style>
+--text:#f6f2ff;
+--muted:#cbbfe6;
+
+--rose:#fb7185;
+--gold:#f5c542;
+--cream:#fff1d6;
+}
+
+body{
+margin:0;
+font-family: Georgia, serif;
+color:var(--text);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:24px;
+
+background:
+radial-gradient(1100px 650px at 18% 10%, rgba(255,107,107,.22), transparent),
+radial-gradient(900px 600px at 84% 0%, rgba(245,197,66,.18), transparent),
+linear-gradient(180deg, var(--bgTop), var(--bgMid), var(--bgBot));
+}
+
+.wrap{
+width:1100px;
+display:grid;
+grid-template-columns: 2fr 1fr;
+gap:20px;
+}
+
+.panel{
+background: rgba(255,255,255,.05);
+border-radius:20px;
+padding:20px;
+box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+.title{
+font-size:28px;
+font-weight:bold;
+}
+
+.badge{
+background: linear-gradient(135deg, var(--gold), var(--cream));
+color:black;
+padding:8px 15px;
+border-radius:20px;
+font-weight:bold;
+}
+
+.current{
+text-align:center;
+padding:40px;
+border-radius:20px;
+background: rgba(255,255,255,.05);
+margin-top:20px;
+}
+
+.word{
+font-size:70px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.status{
+margin-top:15px;
+}
+
+button{
+margin:10px;
+padding:10px 18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.pick{
+background: linear-gradient(135deg,var(--rose),var(--gold));
+color:black;
+}
+
+.secondary{
+background:#333;
+color:white;
+}
+
+.pickedList{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:10px;
+}
+
+.chip{
+background: rgba(255,255,255,.1);
+padding:6px 10px;
+border-radius:10px;
+font-size:12px;
+}
+
+.chip.gift{
+background: gold;
+color:black;
+}
+
+</style>
+
 </head>
 <body>
-  <div class="wrap">
-    <section class="panel">
-      <header>
-        <div class="title">
-          <h1>🍷 Anusha's Housie</h1>
-          <div class="subpillRow">
-            <span class="pill">Italian Romance UI</span>
-            <span class="pill">50th Birthday Words</span>
-          </div>
-        </div>
-        <div class="badge"><span id="remainingCount">0</span> remaining</div>
-      </header>
 
-      <div class="main">
-        <div class="current">
-          <div class="label">Current Word</div>
-          <div class="word" id="currentWord">READY?</div>
-          <div class="status" id="statusLine">Click “Pick Next Word” to begin.</div>
+<div class="wrap">
 
-          <div class="giftBanner">
-            <span class="giftDot"></span>
-            <span><b>Gift Words:</b> ANUSHA • ASHOK • TANVI • ADVAY</span>
-          </div>
-        </div>
+<div class="panel">
 
-        <div class="controls">
-          <button class="btn-primary" id="pickBtn">Pick Next Word</button>
-          <button class="btn-secondary" id="undoBtn">Undo</button>
-          <button class="btn-secondary" id="fullscreenBtn">Fullscreen</button>
-          <button class="btn-danger" id="resetBtn">Reset</button>
-        </div>
-      </div>
-    </section>
+<div style="display:flex;justify-content:space-between;">
+<div class="title">🍷 Anusha's Housie</div>
+<div class="badge" id="remainingCount">100 remaining</div>
+</div>
 
-    <aside class="panel">
-      <div class="side">
-        <h2>Picked words <span class="miniPill" id="pickedCount">0 picked</span></h2>
-        <div class="pickedBox">
-          <div class="pickedList" id="pickedList"></div>
-        </div>
+<div class="current">
 
-        <h2>Words to be picked <span class="miniPill">Edit anytime</span></h2>
-        <textarea id="wordsInput" aria-label="Words to be picked"></textarea>
-        <div class="hint">
-          One word per line. Add your personal words (like the ones you edited) here, then press <b>Reset</b>.
-        </div>
-      </div>
-    </aside>
-  </div>
+<div>Current Word</div>
+
+<div class="word" id="currentWord">READY?</div>
+
+<div class="status" id="statusLine"></div>
+
+<div style="margin-top:10px;font-size:14px;">
+🎁 Gift Words: ANUSHA • ASHOK • TANVI • ADVAY
+</div>
+
+</div>
+
+<div style="text-align:center;">
+
+<button class="pick" onclick="pickNext()">Pick Next Word</button>
+
+<button class="secondary" onclick="undo()">Undo</button>
+
+<button class="secondary" onclick="resetGame()">Reset</button>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<div>Picked words (<span id="pickedCount">0</span>)</div>
+
+<div class="pickedList" id="pickedList"></div>
+
+</div>
+
+</div>
 
 <script>
-  // ===== Gift words (highlighted when picked) =====
-  const GIFT_WORDS = new Set(["ANUSHA", "ASHOK", "TANVI", "ADVAY"]);
 
-  // ===== Mandatory pick: ANUSHA must appear by pick 15 (natural) =====
-  const GUARANTEE_ANUSHA_BY_PICK = 15;
+const GIFT_WORDS=["ANUSHA","ASHOK","TANVI","ADVAY"]
 
-  // ===== 100 words: 50th birthday + her/family vibe (NO Italian-themed words) =====
-  // You can replace/add your custom words directly in the textarea and hit Reset.
-  const DEFAULT_WORDS = [
-    "ANUSHA","ASHOK","TANVI","ADVAY",
+const GUARANTEE_ANUSHA_BY_PICK=15
 
-    "FIFTY","50TH","GOLDEN","MILESTONE","CELEBRATION","CHEERS","TOAST","MOTHER-IN-LAW","PERFORMANCE","BIRTHDAY-BUMS",
-    "QUEEN","STAR","CROWN","SHINE","GLOW","SPARKLE","GRACE","KINDNESS","WISDOM","STRENGTH",
+const DEFAULT_WORDS=[
 
-    "FAMILY","FRIENDS","LOVE","LAUGHTER","HUGS","SMILES","BLESSINGS","GRATITUDE","MEMORIES","TOGETHER",
-    "HOME","HEART","CARE","SUPPORT","PROUD","INSPIRE","ROLE MODEL","SUNSHINE","HAPPINESS","GOOD VIBES",
+"ANUSHA","ASHOK","TANVI","ADVAY",
 
-    "SURPRISE","PARTY","BANQUET","DECOR","FLOWERS","GARLAND","BALLOONS","CONFETTI","BANNER","RIBBON",
-    "CAKE","CANDLES","WISHES","PHOTOS","PHOTOBOOTH","SELFIE","GROUP PIC","APPLAUSE","SPEECH","DANCE",
-    "MUSIC","PLAYLIST","DJ","DANCEFLOOR","GAMES","PRIZES","GIFTS","WRAPPING","THANK YOU","WELCOME",
+"FIFTY","GOLDEN","CELEBRATION","CHEERS","TOAST","HONOR",
 
-    "SUKHRAJJI","SUSHILA","SISTERS","PANI PURI","CHICKMANGLORE","HOLALKERE","PLANTS","KALAKAND","SAHELI","HOUSTON",
-    "FEBRUARY","RASGULLA","SNACKS","DINNER","ACCOUNTANT","WALKING","GREEN JUICE","FUN","HUT","HAPPY TEARS",
+"QUEEN","CROWN","SPARKLE","GRACE","WISDOM","LOVE","LAUGHTER",
 
-    "GOOD HEALTH","LONG LIFE","PROSPERITY","SUCCESS","PEACE","JOYFUL","BLESSED","FOREVER YOUNG","YOUNG AT HEART","BEST YEARS",
-    "NEW CHAPTER","BRIGHT FUTURE","DREAMS","ADVENTURE","TRAVEL","VACATION","THROWBACK","CHILDHOOD","NOSTALGIA","MOMENTS"
-  ];
+"BLESSINGS","MEMORIES","SMILES","FAMILY","FRIENDS","JOY",
 
-  let pool = [];
-  let picked = [];
+"SURPRISE","PARTY","BANQUET","BALLOONS","CONFETTI","FLOWERS",
 
-  const elCurrent = document.getElementById("currentWord");
-  const elStatus = document.getElementById("statusLine");
-  const elPickedList = document.getElementById("pickedList");
-  const elRemaining = document.getElementById("remainingCount");
-  const elWordsInput = document.getElementById("wordsInput");
-  const elPickedCount = document.getElementById("pickedCount");
+"CAKE","CANDLES","PHOTOS","SELFIE","DANCE","MUSIC",
 
-  function normalizeWords(arr){
-    return arr
-      .map(w => String(w || "").trim())
-      .filter(Boolean)
-      .map(w => w.replace(/\s+/g, " ").toUpperCase());
-  }
-  function unique(arr){ return [...new Set(arr)]; }
+"GIFTS","WRAPPING","THANK YOU","WELCOME",
 
-  function getWordsFromTextarea(){
-    const lines = elWordsInput.value.split(/\r?\n/);
-    return unique(normalizeWords(lines));
-  }
+"CHAI","SAMOSA","BIRYANI","GULAB JAMUN","LADDU",
 
-  function init(){
-    elWordsInput.value = DEFAULT_WORDS.join("\n");
-    resetGame();
-  }
+"GOOD HEALTH","LONG LIFE","SUCCESS","PEACE","HAPPINESS",
 
-  function resetGame(){
-    const words = getWordsFromTextarea();
-    if(!words.includes("ANUSHA")){
-      alert('Please keep "ANUSHA" in the list (mandatory).');
-      return;
-    }
-    if(words.length < 20){
-      alert("Please keep at least 20 words (one per line).");
-      return;
-    }
-    pool = [...words];
-    picked = [];
-    elCurrent.textContent = "READY?";
-    elStatus.textContent = "Click “Pick Next Word” to begin.";
-    render();
-  }
+"STAR","HEART","SUNSHINE","GLOW","SHINE",
 
-  function render(){
-    elRemaining.textContent = pool.length;
-    elPickedCount.textContent = `${picked.length} picked`;
+"DREAMS","ADVENTURE","TRAVEL","VACATION",
 
-    elPickedList.innerHTML = "";
-    picked.slice().reverse().forEach(w => {
-      const chip = document.createElement("div");
-      chip.className = "chip" + (GIFT_WORDS.has(w) ? " gift" : "");
-      chip.textContent = w;
-      elPickedList.appendChild(chip);
-    });
+"HOME","TOGETHER","FOREVER","PROUD","INSPIRE",
 
-    document.getElementById("pickBtn").disabled = (pool.length === 0);
-  }
+"ROLE MODEL","LEGEND","HERO","ANGEL","SPECIAL",
 
-  function pickRandomIndex(max){
-    return Math.floor(Math.random() * max);
-  }
+"BEAUTIFUL","STRONG","KIND","CARING","WARM",
 
-  function forcePick(word){
-    const idx = pool.indexOf(word);
-    if(idx === -1) return null;
-    return pool.splice(idx, 1)[0];
-  }
+"LAZY LAUGHS","FUN","JOYFUL","BLESSED",
 
-  function pickNext(){
-    if(pool.length === 0){
-      elCurrent.textContent = "DONE!";
-      elStatus.textContent = "All words have been picked.";
-      render();
-      return;
-    }
+"NEW CHAPTER","BRIGHT FUTURE","BEST YEARS",
 
-    // Guarantee ONLY ANUSHA by pick 15 (mandatory)
-    if (GUARANTEE_ANUSHA_BY_PICK != null && pool.includes("ANUSHA")) {
-      const picksSoFar = picked.length;
-      const remainingUntilGuarantee = GUARANTEE_ANUSHA_BY_PICK - picksSoFar;
-      if (remainingUntilGuarantee <= 1) {
-        const word = forcePick("ANUSHA");
-        picked.push(word);
-        showPicked(word);
-        return;
-      }
-    }
+"CHILDHOOD","NOSTALGIA","THROWBACK",
 
-    // Normal random pick for everything else
-    const idx = pickRandomIndex(pool.length);
-    const word = pool.splice(idx, 1)[0];
-    picked.push(word);
-    showPicked(word);
-  }
+"MOMENTS","FOREVER YOUNG","YOUNG AT HEART"
 
-  function showPicked(word){
-    elCurrent.textContent = word;
+]
 
-    if (word === "ANUSHA"){
-      elStatus.textContent = `🍰 ANUSHA is picked! (${picked.length} picked so far)`;
-    } else if (GIFT_WORDS.has(word)){
-      elStatus.textContent = `🎁 Gift word! (${picked.length} picked so far)`;
-    } else {
-      elStatus.textContent = `${picked.length} picked • ${pool.length} remaining`;
-    }
-    render();
-  }
+let pool=[...DEFAULT_WORDS]
 
-  function undo(){
-    if(picked.length === 0) return;
-    const last = picked.pop();
-    pool.push(last);
-    elCurrent.textContent = picked.length ? picked[picked.length - 1] : "READY?";
-    elStatus.textContent = "Undid last pick.";
-    render();
-  }
+let picked=[]
 
-  function fullscreen(){
-    const root = document.documentElement;
-    if (!document.fullscreenElement) root.requestFullscreen?.();
-    else document.exitFullscreen?.();
-  }
+function updateUI(){
 
-  document.getElementById("pickBtn").addEventListener("click", pickNext);
-  document.getElementById("resetBtn").addEventListener("click", resetGame);
-  document.getElementById("undoBtn").addEventListener("click", undo);
-  document.getElementById("fullscreenBtn").addEventListener("click", fullscreen);
+document.getElementById("remainingCount").innerText=pool.length+" remaining"
 
-  init();
+document.getElementById("pickedCount").innerText=picked.length
+
+let html=""
+
+picked.slice().reverse().forEach(w=>{
+
+html+=`<div class="chip ${GIFT_WORDS.includes(w)?'gift':''}">${w}</div>`
+
+})
+
+document.getElementById("pickedList").innerHTML=html
+
+}
+
+function pickNext(){
+
+if(pool.length==0)return
+
+if(pool.includes("ANUSHA") && picked.length>=GUARANTEE_ANUSHA_BY_PICK-1){
+
+pick("ANUSHA")
+
+return
+
+}
+
+let rand=pool[Math.floor(Math.random()*pool.length)]
+
+pick(rand)
+
+}
+
+function pick(word){
+
+pool=pool.filter(w=>w!=word)
+
+picked.push(word)
+
+document.getElementById("currentWord").innerText=word
+
+updateUI()
+
+}
+
+function undo(){
+
+if(picked.length==0)return
+
+let last=picked.pop()
+
+pool.push(last)
+
+updateUI()
+
+}
+
+function resetGame(){
+
+pool=[...DEFAULT_WORDS]
+
+picked=[]
+
+document.getElementById("currentWord").innerText="READY?"
+
+updateUI()
+
+}
+
+updateUI()
+
 </script>
+
 </body>
 </html>
