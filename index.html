@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Housie Word Caller – 50th Birthday</title>
+  <style>
+    :root { --bg:#0b1220; --card:#111a2e; --card2:#0f1730; --text:#eef2ff; --muted:#aab3d6; }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 20% 10%, #2a1b5f 0%, var(--bg) 55%),
+                  radial-gradient(900px 600px at 90% 0%, #7a1f4c 0%, transparent 55%),
+                  radial-gradient(900px 600px at 70% 90%, #b45309 0%, transparent 60%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .wrap{
+      width:min(1100px, 100%);
+      display:grid;
+      grid-template-columns: 1.3fr .9fr;
+      gap:18px;
+    }
+    .panel{
+      background: color-mix(in oklab, var(--card) 90%, transparent);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    header{
+      padding:18px 18px 10px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .title{
+      display:flex; flex-direction:column; gap:3px;
+    }
+    .title h1{ margin:0; font-size:18px; letter-spacing:.2px;}
+    .title p{ margin:0; color:var(--muted); font-size:13px;}
+    .badge{
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .main{
+      padding:18px;
+      display:grid;
+      grid-template-rows:auto auto;
+      gap:14px;
+    }
+    .current{
+      border-radius:20px;
+      background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12);
+      padding:22px;
+      min-height:240px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      position:relative;
+    }
+    .current .label{
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:.3px;
+      margin-bottom:10px;
+    }
+    .word{
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight:800;
+      line-height:1.05;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      text-shadow: 0 10px 30px rgba(0,0,0,.35);
+      word-break: break-word;
+    }
+    .sub{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    button{
+      border:none;
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:650;
+      cursor:pointer;
+      transition: transform .08s ease, filter .15s ease, opacity .15s ease;
+    }
+    button:active{ transform: translateY(1px) scale(.99); }
+    .btn-primary{
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color:#140a12;
+    }
+    .btn-secondary{
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .btn-danger{
+      background: rgba(239,68,68,.16);
+      color:#fecaca;
+      border:1px solid rgba(239,68,68,.25);
+    }
+    .btn-secondary:hover, .btn-primary:hover, .btn-danger:hover { filter: brightness(1.06); }
+    .side{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      height: 100%;
+    }
+    .side h2{
+      margin:0;
+      font-size:15px;
+      color:var(--text);
+      letter-spacing:.2px;
+    }
+    .pickedBox{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:12px;
+      overflow:auto;
+      max-height: 420px;
+    }
+    .pickedList{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      font-size:12px;
+      letter-spacing:.2px;
+      text-transform: uppercase;
+    }
+    .footerNote{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+    textarea{
+      width:100%;
+      min-height:110px;
+      border-radius:14px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      padding:10px 12px;
+      resize:vertical;
+      font-size:12px;
+      outline:none;
+    }
+    @media (max-width: 920px){
+      .wrap{ grid-template-columns: 1fr; }
+      .pickedBox{ max-height: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="panel">
+      <header>
+        <div class="title">
+          <h1>✨ 50th Birthday Housie – Word Caller</h1>
+          <p>Click “Pick Next Word” • No repeats • Big screen friendly</p>
+        </div>
+        <div class="badge"><span id="remainingCount">0</span> remaining</div>
+      </header>
+
+      <div class="main">
+        <div class="current">
+          <div class="label">CURRENT WORD</div>
+          <div class="word" id="currentWord">READY?</div>
+          <div class="sub" id="statusLine">Load your words (optional) and start picking.</div>
+        </div>
+
+        <div class="controls">
+          <button class="btn-primary" id="pickBtn">Pick Next Word</button>
+          <button class="btn-secondary" id="undoBtn">Undo</button>
+          <button class="btn-secondary" id="fullscreenBtn">Fullscreen</button>
+          <button class="btn-danger" id="resetBtn">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="side">
+        <h2>Already Picked</h2>
+        <div class="pickedBox">
+          <div class="pickedList" id="pickedList"></div>
+        </div>
+
+        <h2>Words (one per line)</h2>
+        <textarea id="wordsInput" placeholder="Paste 100 words here, one per line..."></textarea>
+
+        <div class="footerNote">
+          Tip: Put <b>ANUSHA</b> in your list. Optionally, set a “guarantee” so ANUSHA appears within the first N picks (see code below).
+        </div>
+      </div>
+    </aside>
+  </div>
+
+<script>
+  // ====== CONFIG (optional rigging) ======
+  const GUARANTEE_WORD = "ANUSHA";   // must exist in the list to guarantee
+  const GUARANTEE_WITHIN_FIRST_N = 12; // set null to disable; e.g., 12 means ANUSHA will appear by pick 12
+
+  // ====== Default words (replace or paste in textarea) ======
+  const DEFAULT_WORDS = [
+    "FAMILY","LOVE","LAUGHTER","BLESSINGS","MEMORIES","CAKE","DANCE","MUSIC","JOY","CELEBRATION",
+    "ANUSHA","SELFIE","SAREE","BANGLES","BINDI","BOLLYWOOD","CHAI","GULAB JAMUN","LADDU","PANI PURI"
+  ];
+
+  let pool = [];
+  let picked = [];
+
+  const elCurrent = document.getElementById("currentWord");
+  const elStatus = document.getElementById("statusLine");
+  const elPickedList = document.getElementById("pickedList");
+  const elRemaining = document.getElementById("remainingCount");
+  const elWordsInput = document.getElementById("wordsInput");
+
+  function normalizeWords(arr){
+    return arr
+      .map(w => String(w || "").trim())
+      .filter(Boolean)
+      .map(w => w.replace(/\s+/g, " ").toUpperCase());
+  }
+
+  function getWordsFromTextarea(){
+    const lines = elWordsInput.value.split(/\r?\n/);
+    const words = normalizeWords(lines);
+    // de-dupe
+    return [...new Set(words)];
+  }
+
+  function init(){
+    elWordsInput.value = DEFAULT_WORDS.join("\n");
+    resetGame();
+  }
+
+  function resetGame(){
+    const words = getWordsFromTextarea();
+    if(words.length < 5){
+      alert("Please paste at least 5 words (one per line).");
+      return;
+    }
+    pool = [...words];
+    picked = [];
+    elCurrent.textContent = "READY?";
+    elStatus.textContent = "Click “Pick Next Word” to start.";
+    render();
+  }
+
+  function render(){
+    elRemaining.textContent = pool.length;
+    elPickedList.innerHTML = "";
+    picked.slice().reverse().forEach(w => {
+      const chip = document.createElement("div");
+      chip.className = "chip";
+      chip.textContent = w;
+      elPickedList.appendChild(chip);
+    });
+  }
+
+  function pickRandomIndex(max){
+    return Math.floor(Math.random() * max);
+  }
+
+  function pickNext(){
+    if(pool.length === 0){
+      elCurrent.textContent = "DONE!";
+      elStatus.textContent = "All words have been picked.";
+      return;
+    }
+
+    // Optional guarantee logic: ensure GUARANTEE_WORD appears within first N picks
+    if (GUARANTEE_WITHIN_FIRST_N != null) {
+      const picksSoFar = picked.length;
+      const remainingPicksAllowed = GUARANTEE_WITHIN_FIRST_N - picksSoFar;
+      const guaranteeStillInPool = pool.includes(GUARANTEE_WORD);
+
+      // If we are at the last chance (remainingPicksAllowed === 1), force it.
+      if (guaranteeStillInPool && remainingPicksAllowed <= 1) {
+        const idx = pool.indexOf(GUARANTEE_WORD);
+        const word = pool.splice(idx, 1)[0];
+        picked.push(word);
+        elCurrent.textContent = word;
+        elStatus.textContent = `Picked ${picked.length} of ${picked.length + pool.length}`;
+        render();
+        return;
+      }
+    }
+
+    // Normal random pick
+    const idx = pickRandomIndex(pool.length);
+    const word = pool.splice(idx, 1)[0];
+    picked.push(word);
+
+    elCurrent.textContent = word;
+    elStatus.textContent = `Picked ${picked.length} of ${picked.length + pool.length}`;
+    render();
+  }
+
+  function undo(){
+    if(picked.length === 0) return;
+    const last = picked.pop();
+    pool.push(last);
+    elCurrent.textContent = picked.length ? picked[picked.length - 1] : "READY?";
+    elStatus.textContent = "Undid last pick.";
+    render();
+  }
+
+  function fullscreen(){
+    const root = document.documentElement;
+    if (!document.fullscreenElement) root.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+
+  document.getElementById("pickBtn").addEventListener("click", pickNext);
+  document.getElementById("resetBtn").addEventListener("click", resetGame);
+  document.getElementById("undoBtn").addEventListener("click", undo);
+  document.getElementById("fullscreenBtn").addEventListener("click", fullscreen);
+
+  // If you edit words, you can reset quickly
+  elWordsInput.addEventListener("change", () => { /* no-op */ });
+
+  init();
+</script>
+</body>
+</html>
