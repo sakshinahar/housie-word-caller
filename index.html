@@ -126,7 +126,6 @@ button{
   <div class="panel">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <div class="title">🍷 Anusha's Housie</div>
-      <!-- This will auto-update to 50 remaining on reset/load -->
       <div class="badge" id="remainingCount"></div>
     </div>
 
@@ -136,7 +135,7 @@ button{
       <div class="status" id="statusLine"></div>
 
       <div style="margin-top:10px;font-size:14px;">
-        🎁 Gift Words: ANUSHA • ASHOK • TANVI • ADVAY
+        🎁 Gift Words: ANUSHA • SUKHRAJJI • SUSHEELA
       </div>
     </div>
 
@@ -155,12 +154,13 @@ button{
 </div>
 
 <script>
-  const GIFT_WORDS = ["ANUSHA","ASHOK","TANVI","ADVAY"];
+  // Highlight these in the picked list + show special status text
+  const GIFT_WORDS = ["ANUSHA","SUKHRAJJI","SUSHEELA"];
 
-  // Must be called exactly on the 15th pick (i.e., when picked.length === 14)
+  // Must be called EXACTLY on the 15th pick (i.e., when picked.length === 14)
   const GUARANTEE_ANUSHA_AT_PICK = 15;
 
-  // Must be called by the 25th pick at the latest (i.e., forced on pick 25 if not yet picked)
+  // SUSHEELA + SUKHRAJJI must appear within the first 25 picks
   const GUARANTEE_OTHERS_BY_PICK = 25;
   const GUARANTEE_BY_25 = ["SUSHEELA","SUKHRAJJI"];
 
@@ -199,7 +199,7 @@ button{
     const el = document.getElementById("statusLine");
     if (word === "ANUSHA"){
       el.innerText = `🍰 ANUSHA picked! (${picked.length} picked • ${pool.length} remaining)`;
-    } else if (GUARANTEE_BY_25.includes(word)){
+    } else if (word === "SUKHRAJJI" || word === "SUSHEELA"){
       el.innerText = `✨ Special pick! (${picked.length} picked • ${pool.length} remaining)`;
     } else if (GIFT_WORDS.includes(word)){
       el.innerText = `🎁 Gift word! (${picked.length} picked • ${pool.length} remaining)`;
@@ -209,7 +209,6 @@ button{
   }
 
   function pick(word){
-    // remove only one instance (safe even if duplicates accidentally appear)
     const idx = pool.indexOf(word);
     if (idx === -1) return; // already picked
     pool.splice(idx, 1);
@@ -224,23 +223,20 @@ button{
   function pickNext(){
     if (pool.length === 0) return;
 
+    const nextPickNumber = picked.length + 1;
+
     // 1) Force ANUSHA exactly at pick #15
-    // When 14 words have already been picked, the next pick is #15.
-    if (picked.length === (GUARANTEE_ANUSHA_AT_PICK - 1) && pool.includes("ANUSHA")){
+    if (nextPickNumber === GUARANTEE_ANUSHA_AT_PICK && pool.includes("ANUSHA")){
       pick("ANUSHA");
       return;
     }
 
     // 2) Ensure SUSHEELA + SUKHRAJJI are picked within first 25 picks
     // If we're at a "last chance" moment, force remaining guarantee words.
-    // Example: if we're about to do pick 25, and one/both still unpicked, force them now.
-    const nextPickNumber = picked.length + 1;
     if (nextPickNumber <= GUARANTEE_OTHERS_BY_PICK){
       const remainingGuaranteed = GUARANTEE_BY_25.filter(w => pool.includes(w));
       const picksLeftUntilDeadline = GUARANTEE_OTHERS_BY_PICK - nextPickNumber + 1;
 
-      // If we have as many (or fewer) picks left as remaining guaranteed words,
-      // we must force them to meet the deadline.
       if (remainingGuaranteed.length > 0 && picksLeftUntilDeadline <= remainingGuaranteed.length){
         pick(remainingGuaranteed[0]);
         return;
@@ -261,7 +257,6 @@ button{
     const current = picked.length ? picked[picked.length - 1] : "READY?";
     document.getElementById("currentWord").innerText = current;
 
-    // Update status after undo
     if (picked.length === 0) {
       document.getElementById("statusLine").innerText = "";
     } else {
@@ -272,7 +267,7 @@ button{
   }
 
   function resetGame(){
-    // Normalize + de-dupe just in case (keeps things stable)
+    // Normalize + de-dupe just in case (keeps it stable)
     const normalized = DEFAULT_WORDS.map(w => String(w).trim().toUpperCase());
     pool = [...new Set(normalized)];
     picked = [];
@@ -283,8 +278,9 @@ button{
     updateUI();
   }
 
-  // Initialize counts correctly (should show 50 remaining)
+  // Initialize correctly (should show 50 remaining)
   resetGame();
 </script>
+
 </body>
 </html>
