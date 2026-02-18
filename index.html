@@ -6,295 +6,285 @@
 <title>Anusha's Housie</title>
 
 <style>
-
 :root{
---bgTop:#12060c;
---bgMid:#0b0a12;
---bgBot:#070a12;
+  --bgTop:#12060c;
+  --bgMid:#0b0a12;
+  --bgBot:#070a12;
 
---text:#f6f2ff;
---muted:#cbbfe6;
+  --text:#f6f2ff;
+  --muted:#cbbfe6;
 
---rose:#fb7185;
---gold:#f5c542;
---cream:#fff1d6;
+  --rose:#fb7185;
+  --gold:#f5c542;
+  --cream:#fff1d6;
 }
 
 body{
-margin:0;
-font-family: Georgia, serif;
-color:var(--text);
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:24px;
+  margin:0;
+  font-family: Georgia, serif;
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
 
-background:
-radial-gradient(1100px 650px at 18% 10%, rgba(255,107,107,.22), transparent),
-radial-gradient(900px 600px at 84% 0%, rgba(245,197,66,.18), transparent),
-linear-gradient(180deg, var(--bgTop), var(--bgMid), var(--bgBot));
+  background:
+    radial-gradient(1100px 650px at 18% 10%, rgba(255,107,107,.22), transparent),
+    radial-gradient(900px 600px at 84% 0%, rgba(245,197,66,.18), transparent),
+    linear-gradient(180deg, var(--bgTop), var(--bgMid), var(--bgBot));
 }
 
 .wrap{
-width:1100px;
-display:grid;
-grid-template-columns: 2fr 1fr;
-gap:20px;
+  width:1100px;
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+  gap:20px;
 }
 
 .panel{
-background: rgba(255,255,255,.05);
-border-radius:20px;
-padding:20px;
-box-shadow:0 20px 60px rgba(0,0,0,.6);
+  background: rgba(255,255,255,.05);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
 }
 
 .title{
-font-size:28px;
-font-weight:bold;
+  font-size:28px;
+  font-weight:bold;
 }
 
 .badge{
-background: linear-gradient(135deg, var(--gold), var(--cream));
-color:black;
-padding:8px 15px;
-border-radius:20px;
-font-weight:bold;
+  background: linear-gradient(135deg, var(--gold), var(--cream));
+  color:black;
+  padding:8px 15px;
+  border-radius:20px;
+  font-weight:bold;
 }
 
 .current{
-text-align:center;
-padding:40px;
-border-radius:20px;
-background: rgba(255,255,255,.05);
-margin-top:20px;
+  text-align:center;
+  padding:40px;
+  border-radius:20px;
+  background: rgba(255,255,255,.05);
+  margin-top:20px;
 }
 
 .word{
-font-size:70px;
-font-weight:bold;
-margin-top:10px;
+  font-size:70px;
+  font-weight:bold;
+  margin-top:10px;
 }
 
 .status{
-margin-top:15px;
+  margin-top:15px;
 }
 
 button{
-margin:10px;
-padding:10px 18px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
+  margin:10px;
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
 }
 
 .pick{
-background: linear-gradient(135deg,var(--rose),var(--gold));
-color:black;
+  background: linear-gradient(135deg,var(--rose),var(--gold));
+  color:black;
 }
 
 .secondary{
-background:#333;
-color:white;
+  background:#333;
+  color:white;
 }
 
 .pickedList{
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-margin-top:10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
 }
 
 .chip{
-background: rgba(255,255,255,.1);
-padding:6px 10px;
-border-radius:10px;
-font-size:12px;
+  background: rgba(255,255,255,.1);
+  padding:6px 10px;
+  border-radius:10px;
+  font-size:12px;
 }
 
 .chip.gift{
-background: gold;
-color:black;
+  background: gold;
+  color:black;
 }
-
 </style>
-
 </head>
-<body>
 
+<body>
 <div class="wrap">
 
-<div class="panel">
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="title">🍷 Anusha's Housie</div>
+      <!-- This will auto-update to 50 remaining on reset/load -->
+      <div class="badge" id="remainingCount"></div>
+    </div>
 
-<div style="display:flex;justify-content:space-between;">
-<div class="title">🍷 Anusha's Housie</div>
-<div class="badge" id="remainingCount">100 remaining</div>
-</div>
+    <div class="current">
+      <div>Current Word</div>
+      <div class="word" id="currentWord">READY?</div>
+      <div class="status" id="statusLine"></div>
 
-<div class="current">
+      <div style="margin-top:10px;font-size:14px;">
+        🎁 Gift Words: ANUSHA • ASHOK • TANVI • ADVAY
+      </div>
+    </div>
 
-<div>Current Word</div>
+    <div style="text-align:center;">
+      <button class="pick" onclick="pickNext()">Pick Next Word</button>
+      <button class="secondary" onclick="undo()">Undo</button>
+      <button class="secondary" onclick="resetGame()">Reset</button>
+    </div>
+  </div>
 
-<div class="word" id="currentWord">READY?</div>
-
-<div class="status" id="statusLine"></div>
-
-<div style="margin-top:10px;font-size:14px;">
-🎁 Gift Words: ANUSHA • ASHOK • TANVI • ADVAY
-</div>
-
-</div>
-
-<div style="text-align:center;">
-
-<button class="pick" onclick="pickNext()">Pick Next Word</button>
-
-<button class="secondary" onclick="undo()">Undo</button>
-
-<button class="secondary" onclick="resetGame()">Reset</button>
-
-</div>
-
-</div>
-
-<div class="panel">
-
-<div>Picked words (<span id="pickedCount">0</span>)</div>
-
-<div class="pickedList" id="pickedList"></div>
-
-</div>
+  <div class="panel">
+    <div>Picked words (<span id="pickedCount">0</span>)</div>
+    <div class="pickedList" id="pickedList"></div>
+  </div>
 
 </div>
 
 <script>
+  const GIFT_WORDS = ["ANUSHA","ASHOK","TANVI","ADVAY"];
 
-const GIFT_WORDS=["ANUSHA","ASHOK","TANVI","ADVAY"]
+  // Must be called exactly on the 15th pick (i.e., when picked.length === 14)
+  const GUARANTEE_ANUSHA_AT_PICK = 15;
 
-const GUARANTEE_ANUSHA_BY_PICK=15
+  // Must be called by the 25th pick at the latest (i.e., forced on pick 25 if not yet picked)
+  const GUARANTEE_OTHERS_BY_PICK = 25;
+  const GUARANTEE_BY_25 = ["SUSHEELA","SUKHRAJJI"];
 
-const DEFAULT_WORDS = [
+  const DEFAULT_WORDS = [
+    "ANUSHA","HUT","HOSTESS","SHOPPING","RED","CINCINNATI","KATY","HIGHWAY PHOBIA","MOD","LOVING",
+    "FIFTY","SUKHRAJJI","SUSHEELA","GREEN JUICE","FLOWERS","VICE PRESIDENT",
+    "SISTERS","DOSA","JVB","FAMILY",
+    "PARTY","BANQUET","BALLOONS",
+    "CAKE","CANDLES","PHOTOS","FEBRUARY","DANCE","MUSIC",
+    "GIFTS",
+    "CHAI","CLEANING","KALAKAND","RASMALAI",
+    "GOOD HEALTH","LONG LIFE","WALK","PEACE","HAPPINESS",
+    "SALMAN KHAN","PLANTS",
+    "BODY COMBAT","CHICKMANGLORE","HOLALKERE",
+    "HOME","SECRET SEVEN",
+    "BEAUTIFUL","STRONG","KIND","CARING","WARM",
+    "BIRTHDAY BUMS",
+    "FOREVER YOUNG"
+  ];
 
-"ANUSHA","ASHOK","TANVI","ADVAY",
+  let pool = [];
+  let picked = [];
 
-"FIFTY","GOLDEN","CELEBRATION","CHEERS","TOAST","HONOR",
+  function updateUI(){
+    document.getElementById("remainingCount").innerText = pool.length + " remaining";
+    document.getElementById("pickedCount").innerText = picked.length;
 
-"QUEEN","CROWN","SPARKLE","GRACE","WISE","LOVE","LAUGHTER",
+    let html = "";
+    picked.slice().reverse().forEach(w => {
+      html += `<div class="chip ${GIFT_WORDS.includes(w) ? "gift" : ""}">${w}</div>`;
+    });
+    document.getElementById("pickedList").innerHTML = html;
+  }
 
-"BLESSINGS","MEMORIES","SMILES","FAMILY","FRIENDS","JOY",
+  function showStatus(word){
+    const el = document.getElementById("statusLine");
+    if (word === "ANUSHA"){
+      el.innerText = `🍰 ANUSHA picked! (${picked.length} picked • ${pool.length} remaining)`;
+    } else if (GUARANTEE_BY_25.includes(word)){
+      el.innerText = `✨ Special pick! (${picked.length} picked • ${pool.length} remaining)`;
+    } else if (GIFT_WORDS.includes(word)){
+      el.innerText = `🎁 Gift word! (${picked.length} picked • ${pool.length} remaining)`;
+    } else {
+      el.innerText = `${picked.length} picked • ${pool.length} remaining`;
+    }
+  }
 
-"SURPRISE","PARTY","BANQUET","BALLOONS","CONFETTI","FLOWERS",
+  function pick(word){
+    // remove only one instance (safe even if duplicates accidentally appear)
+    const idx = pool.indexOf(word);
+    if (idx === -1) return; // already picked
+    pool.splice(idx, 1);
 
-"CAKE","CANDLES","PHOTOS","FEBRUARY","DANCE","MUSIC",
+    picked.push(word);
+    document.getElementById("currentWord").innerText = word;
 
-"GIFTS","WRAPPING","THANK YOU","WELCOME",
+    showStatus(word);
+    updateUI();
+  }
 
-"CHAI","CLEANING","DOSA","KALAKAND","RASMALAI",
+  function pickNext(){
+    if (pool.length === 0) return;
 
-"GOOD HEALTH","LONG LIFE","WALK","PEACE","HAPPINESS",
+    // 1) Force ANUSHA exactly at pick #15
+    // When 14 words have already been picked, the next pick is #15.
+    if (picked.length === (GUARANTEE_ANUSHA_AT_PICK - 1) && pool.includes("ANUSHA")){
+      pick("ANUSHA");
+      return;
+    }
 
-"STAR","HEART","PLANTS","GLOW","SHINE",
+    // 2) Ensure SUSHEELA + SUKHRAJJI are picked within first 25 picks
+    // If we're at a "last chance" moment, force remaining guarantee words.
+    // Example: if we're about to do pick 25, and one/both still unpicked, force them now.
+    const nextPickNumber = picked.length + 1;
+    if (nextPickNumber <= GUARANTEE_OTHERS_BY_PICK){
+      const remainingGuaranteed = GUARANTEE_BY_25.filter(w => pool.includes(w));
+      const picksLeftUntilDeadline = GUARANTEE_OTHERS_BY_PICK - nextPickNumber + 1;
 
-"DREAMS","BODY COMBAT","CHICKMANGLORE","HOLALKERE",
+      // If we have as many (or fewer) picks left as remaining guaranteed words,
+      // we must force them to meet the deadline.
+      if (remainingGuaranteed.length > 0 && picksLeftUntilDeadline <= remainingGuaranteed.length){
+        pick(remainingGuaranteed[0]);
+        return;
+      }
+    }
 
-"HOME","TOGETHER","FOREVER","PROUD","INSPIRE",
+    // 3) Normal random pick
+    const rand = pool[Math.floor(Math.random() * pool.length)];
+    pick(rand);
+  }
 
-"ROLE MODEL","SISTERS","SECRET SEVEN","GREEN JUICE","SPECIAL",
+  function undo(){
+    if (picked.length === 0) return;
 
-"BEAUTIFUL","STRONG","KIND","CARING","WARM",
+    const last = picked.pop();
+    pool.push(last);
 
-"LAZY LAUGHS","FUN","JOYFUL","BLESSED",
+    const current = picked.length ? picked[picked.length - 1] : "READY?";
+    document.getElementById("currentWord").innerText = current;
 
-"NEW CHAPTER","BRIGHT FUTURE","BEST YEARS",
+    // Update status after undo
+    if (picked.length === 0) {
+      document.getElementById("statusLine").innerText = "";
+    } else {
+      showStatus(current);
+    }
 
-"CHILDHOOD","BIRTHDAY BUMS","THROWBACK",
+    updateUI();
+  }
 
-"MOMENTS","FOREVER YOUNG","YOUNG AT HEART"
+  function resetGame(){
+    // Normalize + de-dupe just in case (keeps things stable)
+    const normalized = DEFAULT_WORDS.map(w => String(w).trim().toUpperCase());
+    pool = [...new Set(normalized)];
+    picked = [];
 
-]
+    document.getElementById("currentWord").innerText = "READY?";
+    document.getElementById("statusLine").innerText = "";
 
+    updateUI();
+  }
 
-let pool=[...DEFAULT_WORDS]
-
-let picked=[]
-
-function updateUI(){
-
-document.getElementById("remainingCount").innerText=pool.length+" remaining"
-
-document.getElementById("pickedCount").innerText=picked.length
-
-let html=""
-
-picked.slice().reverse().forEach(w=>{
-
-html+=`<div class="chip ${GIFT_WORDS.includes(w)?'gift':''}">${w}</div>`
-
-})
-
-document.getElementById("pickedList").innerHTML=html
-
-}
-
-function pickNext(){
-
-if(pool.length==0)return
-
-if(pool.includes("ANUSHA") && picked.length>=GUARANTEE_ANUSHA_BY_PICK-1){
-
-pick("ANUSHA")
-
-return
-
-}
-
-let rand=pool[Math.floor(Math.random()*pool.length)]
-
-pick(rand)
-
-}
-
-function pick(word){
-
-pool=pool.filter(w=>w!=word)
-
-picked.push(word)
-
-document.getElementById("currentWord").innerText=word
-
-updateUI()
-
-}
-
-function undo(){
-
-if(picked.length==0)return
-
-let last=picked.pop()
-
-pool.push(last)
-
-updateUI()
-
-}
-
-function resetGame(){
-
-pool=[...DEFAULT_WORDS]
-
-picked=[]
-
-document.getElementById("currentWord").innerText="READY?"
-
-updateUI()
-
-}
-
-updateUI()
-
+  // Initialize counts correctly (should show 50 remaining)
+  resetGame();
 </script>
-
 </body>
 </html>
